@@ -13,13 +13,16 @@ export default {
   created(){
 
       const bintree = new BinTree();
-      bintree.add(5);
-      bintree.add(10);
-      bintree.add(2);
-      bintree.add(4);
-      bintree.add(4);
-      console.log(bintree)
+      bintree.insert(5);
+      bintree.insert(10);
+      bintree.insert(2);
+      bintree.insert(4);
+      bintree.insert(17);
+      bintree.insert(17);
+
+      console.log(bintree);
       console.log("bin Tree created");
+      console.log(bintree.countNodes());
   }
 }
 </script>
