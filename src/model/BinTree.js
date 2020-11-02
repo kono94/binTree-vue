@@ -4,6 +4,37 @@ export class BinTree{
         this.root = null;
     }
 
+    /* 
+       Finds a certain Node.
+       Returns an object containing the node itself (or null), the parent node and the
+       information whether the 'node' is the right or left child of the parent node.
+
+       This function can be used as a helper function to find, insert and delete nodes.
+        Find: 'node' is null if not present or contains the node itself (Simple null-check)
+        insert: Check if node is not null and the insert a new node from parent node as the left or right
+                child depending on 'leftChild' boolean flag.
+        delete: Check if node is not null and got the parent not with the information of left or right child
+     */
+    traverse(n, v){
+        let found = false;
+        const result = {node: n, parent: null, leftChild: false};
+        while(!found && result.node !== null){
+            if(v === n.data){
+                found = true;
+            }else if(v < n.data){
+                result.leftChild = true;
+                n = n.leftChild;
+                result.parent = result.node;
+            }else{
+                result.leftChild = false;
+                n = n.rightChild;
+                result.parent = result.node;
+            }
+            result.node = n;
+        }
+        return result;
+    }
+
     /*
      Adds a node to the binary tree.
     */
@@ -26,43 +57,19 @@ export class BinTree{
             n.rightChild == null? n.rightChild = new Node(v): this._inserHelper(n.rightChild, v);
         }    
     }
-
+    
     /*
         Iterative Helper
     */
     _insertHelperTraverse(n,v){
         const traverseResult = this.traverse(n,v);
-        if(traverseResult.found){
+        if(traverseResult.node !== null){
             console.error(`Node with this value (${v}) already present`);
         }else{
-            traverseResult.insertLeft ? traverseResult.node.leftChild = new Node(v) : traverseResult.node.rightChild = new Node(v);
+            traverseResult.leftChild ? traverseResult.parent.leftChild = new Node(v) : traverseResult.parent.rightChild = new Node(v);
         }
     }
-    /* 
-        Finds the element in the tree.
-        'found' indicates if the element is present in the tree.
-        If the node is not present in the tree, the last not-null node
-        of the traverse process is returned ('node') with the information whether to
-        insert as left or right child ('insertLeft').
-     */
-    traverse(n, v){
-        const result = {found: false, node: n, insertLeft: false};
-        while(!result.found && n !== null){
-            result.node = n;
-            if(v === n.data){
-                result.found = true;
-                result.insertLeft = null;
-            }else if(v < n.data){
-                result.insertLeft = true;
-                n = n.leftChild;
-            }else{
-                result.insertLeft = false;
-                n = n.rightChild;
-            }
-        }
-        return result;
-    }
-
+    
     countNodes(){
         return this._countHelper(this.root);
     }
@@ -70,6 +77,10 @@ export class BinTree{
     _countHelper(n){
         if(!n) return 0;
         return this._countHelper(n.leftChild) + this._countHelper(n.rightChild) + 1;
+    }
+
+    find(v){
+        return this.traverse(this.root, v);
     }
 }
 

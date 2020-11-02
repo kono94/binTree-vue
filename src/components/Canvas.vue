@@ -18,8 +18,8 @@ export default {
       bintree.insert(2);
       bintree.insert(4);
       bintree.insert(17);
-      bintree.insert(17);
-
+  
+      console.log(bintree.find(5));
       console.log(bintree);
       console.log("bin Tree created");
       console.log(bintree.countNodes());
